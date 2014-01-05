@@ -1,0 +1,20 @@
+{
+  "name": "benchrunner",
+  "version": "0.0.1",
+  "description": "Benchmark Suite Runner for benchmark.js",
+  "main": "benchrunner.js",
+  "dependencies": {
+    "benchmark": "~1.0.0",
+    "lodash": "~2.4.1",
+    "scriptjs": "~2.4.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "benchmark",
+    "suite",
+    "runner",
+    "performance"
+  ],
+  "author": "Lars Kappert <lars@webpro.nl> (http://webpro.nl)",
+  "license": "MIT"
+}
