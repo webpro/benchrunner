@@ -1,7 +1,6 @@
 (function(root) {
 
-    var bench = root._bench = root._bench || {},
-        suites = bench.suites = bench.suites || [];
+    var suites = root.benchrunner.suites;
 
     suites.push(Benchmark.Suite('has')
         .add('String.search', function() {

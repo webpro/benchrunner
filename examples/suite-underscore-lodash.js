@@ -1,7 +1,7 @@
 (function(root) {
 
-    var bench = root._bench = {},
-        suites = bench.suites = [],
+    var bench = root.benchrunner,
+        suites = bench.suites,
         libs = bench.libs = [
             {
                 name: 'Lo-Dash',

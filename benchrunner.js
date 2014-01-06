@@ -91,12 +91,20 @@
         return isFinite(result) ? result : 0;
     }
 
+    function invokeSetupFns() {
+        var setup = root.benchrunner.setup,
+            setupFns = typeof setup == 'function' ? [setup] : setup;
+        _.each(setupFns, function(setup) {
+            setup();
+        });
+    }
+
     function init() {
-        var bench = root._bench;
-        if (typeof bench.setup == 'function') {
-            bench.setup();
-        }
-        loadScripts(_.pluck(bench.libs, 'script'), run);
+        var bench = root.benchrunner;
+        loadScripts(_.pluck(bench.libs, 'script'), function() {
+            invokeSetupFns();
+            run();
+        });
     }
 
     function run() {
@@ -113,7 +121,7 @@
         },
         onComplete: function() {
 
-            var suites = root._bench.suites;
+            var suites = root.benchrunner.suites;
 
             for (var index = 0, length = this.length; index < length; index++) {
                 var bench = this[index];
@@ -182,6 +190,13 @@
     if (Benchmark.platform + '') {
         log('\nPlatform: ' + Benchmark.platform);
     }
+
+    root.benchrunner = {
+        suites: [],
+        _suites: [],
+        libs: [],
+        setup: []
+    };
 
     if (root.document && !root.phantom) {
         window.onload = init;

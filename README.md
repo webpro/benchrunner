@@ -16,8 +16,7 @@ You can write a suite like this:
 
     (function(root) {
     
-        var bench = root._bench = root._bench || {},
-            suites = bench.suites = bench.suites || [];
+        var suites = root.benchrunner.suites;;
     
         suites.push(Benchmark.Suite('trim')
             .add('String.replace', function() {
