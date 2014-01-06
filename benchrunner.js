@@ -101,7 +101,7 @@
 
     function run() {
         log('\nSit back and relax, this may take a while.');
-        root._bench.suites[0].run({ async: true, maxTime: 0.5 });
+        root.benchrunner.suites[0].run({ async: true });
     }
 
     _.extend(Benchmark.Suite.options, {
@@ -151,7 +151,7 @@
 
             if (suites.length) {
 
-                suites[0].run({ async: true, maxTime: 0.5 });
+                suites[0].run({ async: true });
 
             } else {
 
