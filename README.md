@@ -29,8 +29,6 @@ You can write a suite like this:
     
     }(typeof global == 'object' && global || this));
 
-Also see the [examples](examples/).
-
 Now you can run them from CLI or in the browser really easy:
 
 ### CLI
@@ -50,6 +48,11 @@ The path to the suite currently must be relative to the location of `benchrunner
 Just point your browser at the runner page, e.g.
 
     http://localhost/your-project/node_modules/benchrunner/examples/basic.html
+
+## Examples
+
+* [Examples](examples/) in this repository.
+* [jQuery Evergreen](https://github.com/webpro/jquery-evergreen/tree/master/benchmark) ([run](http://webpro.github.io/jquery-evergreen/benchmark/))
 
 ## Credits
 
