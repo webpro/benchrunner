@@ -1,6 +1,6 @@
 {
   "name": "benchrunner",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Benchmark Suite Runner for benchmark.js",
   "main": "benchrunner.js",
   "bin": "bin/benchrunner.js",
