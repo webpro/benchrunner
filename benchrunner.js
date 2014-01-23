@@ -17,6 +17,13 @@
         isBrowser = Benchmark.support.browser,
         results = {};
 
+    if (!isBrowser) {
+        var system = require('system'),
+            fs = require('fs'),
+            __filename = system.args[1] || '',
+            __dirname = __filename.substr(0, __filename.lastIndexOf('/') + 1);
+    }
+
     /**
      * Logs text to the console and some UI "console", if present.
      *
@@ -48,9 +55,7 @@
                 script.srcName = 'script' + index;
                 $script(script.src, script.srcName, script.onload);
             } else {
-                var path = require('system').args[1],
-                    base = path.substr(0, path.lastIndexOf('/') + 1);
-                var importValue = load(base + script.src);
+                var importValue = load(fs.absolute(script.src));
                 if (typeof script.onload === 'function') {
                     script.onload(importValue);
                 }
@@ -201,7 +206,10 @@
     if (root.document && !root.phantom) {
         window.onload = init;
     } else {
-        phantom.args.forEach(load);
+        phantom.args.forEach(function(script) {
+            load(fs.absolute(script));
+        });
+        fs.changeWorkingDirectory(__dirname);
         init();
     }
 
