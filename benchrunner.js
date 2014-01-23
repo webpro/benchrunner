@@ -11,17 +11,18 @@
 
 (function(root) {
 
-    var load = typeof require == 'function' ? require : root.load,
+    var load = typeof require === 'function' ? require : root.load,
         _ = (root._ || (root._ = load('./node_modules/lodash/dist/lodash.compat.min.js'))).noConflict(),
         Benchmark = root.Benchmark || (root.Benchmark = load('./node_modules/benchmark/benchmark.js')),
         isBrowser = Benchmark.support.browser,
-        results = {};
+        results = {},
+        system, fs, __filename, __dirname;
 
     if (!isBrowser) {
-        var system = require('system'),
-            fs = require('fs'),
-            __filename = system.args[1] || '',
-            __dirname = __filename.substr(0, __filename.lastIndexOf('/') + 1);
+        system = require('system');
+        fs = require('fs');
+        __filename = system.args[1] || '';
+        __dirname = __filename.substr(0, __filename.lastIndexOf('/') + 1);
     }
 
     /**
@@ -155,12 +156,12 @@
             return {
                 name: benchName,
                 meanHz: getGeometricMean(result)
-            }
+            };
         }).sort(function(a, b) {
                 return a.meanHz > b.meanHz ? -1 : 1;
             }).forEach(function(result, index, collection) {
                 if (index === 0) {
-                    log(result.name + ' is fastest')
+                    log(result.name + ' is fastest');
                 } else {
                     log(result.name + ' is ' + Math.round((1 - result.meanHz / collection[0].meanHz) * 100) + '% slower');
                 }
@@ -177,12 +178,14 @@
         onComplete: function() {
 
             var suite = this,
-                suiteResults = {};
+                suiteResults = {},
+                bench,
+                errored = false;
 
             for (var index = 0, length = this.length; index < length; index++) {
-                var bench = this[index];
+                bench = this[index];
                 if (bench.error) {
-                    var errored = true;
+                    errored = true;
                 }
             }
 
@@ -207,7 +210,7 @@
                     if (_.indexOf(fastest, bench) > -1) {
                         log('  ' + bench.name + ' is fastest');
                     } else {
-                        log('  ' + bench.name + ' is ' + Math.round((1 - bench.hz / fastest[0].hz) * 100) + '% slower')
+                        log('  ' + bench.name + ' is ' + Math.round((1 - bench.hz / fastest[0].hz) * 100) + '% slower');
                     }
                 });
 
