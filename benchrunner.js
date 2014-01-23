@@ -113,8 +113,58 @@
     }
 
     function run() {
-        log('\nSit back and relax, this may take a while.');
-        root.benchrunner.suites[0].run({ async: true });
+        if(root.benchrunner.suites[0]) {
+            log('\nSit back and relax, this may take a while.');
+            root.benchrunner.suites[0].run({ async: true });
+        } else {
+            log('\nNo suites found.');
+            if (root.phantom) {
+                phantom.exit();
+            }
+        }
+    }
+
+    function next() {
+
+        var suites = root.benchrunner.suites;
+
+        // Remove current suite from queue, and run the next or calculate/log the summary
+
+        suites.shift();
+
+        if (suites.length) {
+
+            suites[0].run({ async: true });
+
+        } else {
+
+            logSummary(results);
+
+            if (root.phantom) {
+                phantom.exit();
+            }
+
+        }
+    }
+
+    function logSummary(results) {
+
+        log('\nSUMMARY');
+
+        _.map(results, function(result, benchName) {
+            return {
+                name: benchName,
+                meanHz: getGeometricMean(result)
+            }
+        }).sort(function(a, b) {
+                return a.meanHz > b.meanHz ? -1 : 1;
+            }).forEach(function(result, index, collection) {
+                if (index === 0) {
+                    log(result.name + ' is fastest')
+                } else {
+                    log(result.name + ' is ' + Math.round((1 - result.meanHz / collection[0].meanHz) * 100) + '% slower');
+                }
+            });
     }
 
     _.extend(Benchmark.Suite.options, {
@@ -126,7 +176,8 @@
         },
         onComplete: function() {
 
-            var suites = root.benchrunner.suites;
+            var suite = this,
+                suiteResults = {};
 
             for (var index = 0, length = this.length; index < length; index++) {
                 var bench = this[index];
@@ -147,6 +198,9 @@
 
                 _.each(benches, function(bench) {
 
+                    suiteResults[suite.name] = suiteResults[suite.name] || {};
+                    suiteResults[suite.name][bench.name] = bench;
+
                     results[bench.name] = results[bench.name] || [];
                     results[bench.name].push(getHz(bench));
 
@@ -156,38 +210,15 @@
                         log('  ' + bench.name + ' is ' + Math.round((1 - bench.hz / fastest[0].hz) * 100) + '% slower')
                     }
                 });
+
             }
 
-            // Remove current suite from queue, and run the next or calculate/log the summary
-
-            suites.shift();
-
-            if (suites.length) {
-
-                suites[0].run({ async: true });
-
+            if(!errored && typeof root.benchrunner.onComplete === 'function') {
+                var onceNext = _.once(next);
+                root.benchrunner.onComplete(suiteResults, onceNext);
+                setTimeout(onceNext, 6000);
             } else {
-
-                log('\nSUMMARY');
-
-                _.map(results, function(result, benchName) {
-                    return {
-                        name: benchName,
-                        meanHz: getGeometricMean(result)
-                    }
-                }).sort(function(a, b) {
-                    return a.meanHz > b.meanHz ? -1 : 1;
-                }).forEach(function(result, index, collection) {
-                    if (index === 0) {
-                        log(result.name + ' is fastest')
-                    } else {
-                        log(result.name + ' is ' + Math.round((1 - result.meanHz / collection[0].meanHz) * 100) + '% slower');
-                    }
-                });
-
-                if (root.phantom) {
-                    phantom.exit();
-                }
+                next();
             }
         }
     });
