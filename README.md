@@ -37,17 +37,21 @@ Currently only PhantomJS is supported.
 
 	phantomjs benchrunner.js suite1.js suite2.js
 
-Effectively, from the project root, that would become e.g.:
+From the root of your project, that would become e.g.:
 
-    phantomjs ./node_modules/benchrunner/benchrunner.js ./examples/suite-basic.js
+    phantomjs ./node_modules/benchrunner/benchrunner.js benchmarks/my-suite.js
 
-The path to the suite currently must be relative to the location of `benchrunner.js`.
+Or, if you install globally (i.e. `npm install -g benchrunner`):
+
+	benchrunner benchmarks/my-suite.js
 
 ### Browser
 
 Just point your browser at the runner page, e.g.
 
-    http://localhost/your-project/node_modules/benchrunner/examples/basic.html
+    http://localhost/your-project/benchmarks/index.html
+
+See `examples/basic.html` for an example (you need to include a few scripts).
 
 ## Examples
 
