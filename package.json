@@ -1,13 +1,17 @@
 {
   "name": "benchrunner",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Benchmark Suite Runner for benchmark.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/webpro/benchrunner.git"
+  },
   "main": "benchrunner.js",
   "bin": "bin/benchrunner.js",
   "dependencies": {
-    "benchmark": "~1.0.0",
-    "lodash": "~2.4.1",
-    "scriptjs": "~2.4.0"
+    "benchmark": "1.0.0",
+    "lodash": "2.4.1",
+    "scriptjs": "2.5.7"
   },
   "devDependencies": {},
   "keywords": [
@@ -16,6 +20,10 @@
     "runner",
     "performance"
   ],
-  "author": "Lars Kappert <lars@webpro.nl> (http://webpro.nl)",
+  "author": {
+    "name": "Lars Kappert",
+    "email": "lars@webpro.nl",
+    "url": "http://webpro.nl"
+  },
   "license": "MIT"
 }
